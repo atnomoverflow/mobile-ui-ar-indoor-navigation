@@ -5,27 +5,38 @@ import BarcodeMask from 'react-native-barcode-mask';
 import {actionCreators as markerActions} from '../state/ducks/marker'
 import { Text, View } from '../components/Themed';
 
-import { useAppDispatch } from '../hooks/hooks';
+import { useAppDispatch,useAppSelector } from '../hooks/hooks';
+import { RootStackParamList, RootState } from '../types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 interface CodeBar{
     type:any,
      data:any
 }
 const { width } = Dimensions.get('window')
 const qrSize = width * 0.3
-export default function QrCodeScannerScreen() {
+type Props = NativeStackScreenProps<RootStackParamList, 'QrScanner'>;
+export default function QrCodeScannerScreen({ route, navigation }: Props) {
     const [hasPermission, setHasPermission] = useState(false);
     const [scanned, setScanned] = useState(false);
     const dispatch= useAppDispatch();
+    const marker=useAppSelector((state:RootState)=>state.marker)
     useEffect(() => {
+      dispatch(markerActions.reset());
       (async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
         setHasPermission(status === 'granted');
       })();
     }, []);
-  
+    useEffect(() => {
+      if(marker.error) 
+      setScanned(false);
+      if(marker.fetched)
+      navigation.navigate('ListWayPoint')
+    } ,[marker]);
     const handleBarCodeScanned = (codebar:CodeBar ) => {
       setScanned(true);
       dispatch(markerActions.fetchMarker(codebar.data))
+      
     };
   
     if (hasPermission === null) {
