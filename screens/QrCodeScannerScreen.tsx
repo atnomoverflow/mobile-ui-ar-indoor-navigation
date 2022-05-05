@@ -28,6 +28,7 @@ export default function QrCodeScannerScreen({ route, navigation }: Props) {
       })();
     }, []);
     useEffect(() => {
+
       if(marker.error) 
       setScanned(false);
       if(marker.fetched)
@@ -35,6 +36,7 @@ export default function QrCodeScannerScreen({ route, navigation }: Props) {
     } ,[marker]);
     const handleBarCodeScanned = (codebar:CodeBar ) => {
       setScanned(true);
+   
       dispatch(markerActions.fetchMarker(codebar.data))
       
     };

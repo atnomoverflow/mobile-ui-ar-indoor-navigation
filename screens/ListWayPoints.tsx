@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react';
 import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { Avatar, ListItem, SearchBar } from "react-native-elements";
-import { useAppSelector } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { RootState, WayPoint } from '../types';
-
+import { actionCreators as pathActions } from '../state/ducks/Path';
 export default function ListWayPoints() {
 
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const marker=useAppSelector((state:RootState)=>state.marker)
+  const path=useAppSelector((state:RootState)=>state.path)
 
+  const dispatch=useAppDispatch()
+  useEffect(
+    ()=>{
+      console.log(path)
+    },[path]
+  )
   useEffect(() => {
     fetch(`http://192.168.1.14:3000/marker/endpoints/${marker.id}`)
       .then((response) => response.json())
@@ -86,8 +93,20 @@ export default function ListWayPoints() {
     );
   };
   const Emerce = (item:any) => {
-    console.log(item)
-    // Navigate to the Ar screen
+    console.log({markerID: marker.id, endPointID: item.id})
+    fetch(`http://192.168.1.14:3000/marker/Path`,{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({query:{markerID: marker.id, endPointID: item.id}})
+    })
+    .then((response)=>response.json())
+    .then((res)=>{
+      console.log(res)
+      dispatch(pathActions.create(res.path))
+    })
   };
   const ItemSeparatorView = () => {
     return (
