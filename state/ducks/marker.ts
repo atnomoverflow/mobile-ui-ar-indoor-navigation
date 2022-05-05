@@ -16,7 +16,7 @@ const register = (marker: Marker): Action => ({
 
 const fetchMarker = (id: string) => {
     return (function (dispatch: Dispatch<AnyAction>) {
-        fetch(`localhost:3000/marker/${id}`)
+        fetch(`localhost:3000/marker/endpoints/${id}`)
             .then((response) => response.json())
             .then((data) => {
                 dispatch(register(data));
