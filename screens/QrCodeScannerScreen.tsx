@@ -2,9 +2,10 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useState, useEffect } from 'react';
 import { Button, Dimensions, Image, StyleSheet } from 'react-native';
 import BarcodeMask from 'react-native-barcode-mask';
-
-import EditScreenInfo from '../components/EditScreenInfo';
+import {actionCreators as markerActions} from '../state/ducks/marker'
 import { Text, View } from '../components/Themed';
+
+import { useAppDispatch } from '../hooks/hooks';
 interface CodeBar{
     type:any,
      data:any
@@ -14,7 +15,7 @@ const qrSize = width * 0.3
 export default function QrCodeScannerScreen() {
     const [hasPermission, setHasPermission] = useState(false);
     const [scanned, setScanned] = useState(false);
-  
+    const dispatch= useAppDispatch();
     useEffect(() => {
       (async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -24,7 +25,7 @@ export default function QrCodeScannerScreen() {
   
     const handleBarCodeScanned = (codebar:CodeBar ) => {
       setScanned(true);
-      alert(`Bar code with type ${codebar.type} and data ${codebar.data} has been scanned!`);
+      dispatch(markerActions.fetchMarker(codebar.data))
     };
   
     if (hasPermission === null) {
