@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
 import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { Avatar, ListItem, SearchBar } from "react-native-elements";
-import { WayPoint } from '../types';
+import { useAppSelector } from '../hooks/hooks';
+import { RootState, WayPoint } from '../types';
 
 export default function ListWayPoints() {
 
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
+  const marker=useAppSelector((state:RootState)=>state.marker)
+
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
+    fetch(`http://192.168.1.14:3000/marker/endpoints/${marker.id}`)
       .then((response) => response.json())
       .then((responseJson) => {
-        setFilteredDataSource(responseJson);
-        setMasterDataSource(responseJson);
+        setFilteredDataSource(responseJson.endPoints);
+        setMasterDataSource(responseJson.endPoints);
       })
       .catch((error) => {
         console.error(error);
@@ -43,7 +46,7 @@ export default function ListWayPoints() {
   };
   const renderItem = ({ item }: any) => (
     <ListItem style={styles.listItemsFormat}
-      onPress={() => toAR()}
+      onPress={() => toAR(item)}
     >
       <ListItem.Content>
         <Avatar source={{ uri: item.image }} />
@@ -55,27 +58,16 @@ export default function ListWayPoints() {
  
   const renderHeader = () => {
     return <SearchBar
-      clearIcon={{ type: 'font-awesome', name: 'clear' }}
-      searchIcon={{ type: 'font-awesome', name: 'search' }}
       onChangeText={(text?: string) => searchFilterFunction(text)}
       onClear={(text?: any) => searchFilterFunction('')}
       placeholder="Type Here..."
       value={search}
-      platform={'default'} 
-      showLoading onCancel={() => { setSearch(''); searchFilterFunction(''); }} 
-      lightTheme={false} 
-      round={false} 
-      cancelButtonTitle={''} 
-      cancelButtonProps={{}}
-      showCancel={false} 
-      onBlur={() => { }} 
-      onFocus={() => { }} 
-      loadingProps={{}} />;
+   />;
   };
 
 
 
-  const toAR = () => {
+  const toAR = (item:any) => {
     Alert.alert(
       'What do you want to do?',
       'Choose an option',
@@ -87,13 +79,14 @@ export default function ListWayPoints() {
         },
         {
           text: 'Emerce the path in the ar sceene',
-          onPress: () => Emerce(),
+          onPress: () => Emerce(item),
         },
       ],
       { cancelable: false },
     );
   };
-  const Emerce = () => {
+  const Emerce = (item:any) => {
+    console.log(item)
     // Navigate to the Ar screen
   };
   const ItemSeparatorView = () => {
@@ -110,18 +103,20 @@ export default function ListWayPoints() {
   };
   return (
     <View style={styles.container}>
+      {renderHeader()}
       <FlatList
         keyExtractor={(item, index) => index.toString()}
         data={filteredDataSource}
         renderItem={renderItem}
         ItemSeparatorComponent={ItemSeparatorView}
-        ListHeaderComponent={renderHeader}
+        
       />
     </View>
   )
 }
 const styles = StyleSheet.create({
   container: {
+    paddingTop:50,
     flex: 1,
   },
   annotationContainer: {
