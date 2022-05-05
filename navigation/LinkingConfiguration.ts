@@ -15,6 +15,8 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       QrScanner:'QrScanner',
       ArSceeneScreen:'ArSceeneScreen',
+      ListWayPoint:'ListWayPoint'
+
     },
   },
 };

@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 import ArSceeneScreen from '../screens/ArSceeneScreen';
+import ListWayPoints from '../screens/ListWayPoints';
 import QrCodeScannerScreen from '../screens/QrCodeScannerScreen';
 import { RootStackParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -34,6 +35,7 @@ function RootNavigator() {
     <Stack.Navigator initialRouteName="QrScanner">
        <Stack.Screen name="QrScanner" component={QrCodeScannerScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ArSceeneScreen" component={ArSceeneScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ListWayPoint" component={ListWayPoints} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
