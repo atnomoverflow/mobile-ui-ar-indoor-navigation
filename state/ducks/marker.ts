@@ -1,6 +1,5 @@
 import { Action, Marker } from "../../types";
 import { AnyAction, Dispatch } from 'redux';
-import { Alert } from "react-native";
 
 const MARKER_REGISTER = 'ArNavigationForMuseum/marker/REGISTER';
 const MARKER_RESET = 'ArNavigationForMuseum/marker/RESET';
