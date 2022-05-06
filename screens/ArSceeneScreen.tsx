@@ -5,7 +5,7 @@ import  {ARScene}  from './ar'
 export default function ArSceeneScreen() {
   return (
     <ViroARSceneNavigator
-    autofocus={true}
+   // autofocus={true}
     initialScene={{
       scene: ARScene,
     }}

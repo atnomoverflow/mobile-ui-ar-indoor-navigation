@@ -43,8 +43,8 @@ const initialState = {
     error:false,
     fetched:false,
     id:"", 
-    longitude:0,
-    laltitude:0}
+    latitude:0,
+    longitude:0}
 const actionCreators = {
     fetchMarker,
     reset
@@ -53,9 +53,9 @@ const reducer = function (state = initialState, action: Action) {
     switch (action.type) {
         case MARKER_REGISTER: {
             const marker = action.payload;
-            const { id, longitude, laltitude } = marker;
+            const { id, longitude, latitude } = marker;
 
-            return { ...state, id, longitude, laltitude,error:false,fetched:true };
+            return { ...state, id, longitude, latitude,error:false,fetched:true };
         }
         case MARKER_RESET:{
             return initialState

@@ -28,7 +28,7 @@ const reducer = function (state = initialState, action: Action) {
     switch (action.type) {
         case PATH_CREATE: {
             const path = action.payload;
-            return [...path,path];
+            return path;
         }
         case PATH_RESET:{
             return initialState
