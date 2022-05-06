@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { Avatar, ListItem, SearchBar } from "react-native-elements";
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { RootState, WayPoint } from '../types';
+import { RootStackParamList, RootState, WayPoint } from '../types';
 import { actionCreators as pathActions } from '../state/ducks/Path';
-export default function ListWayPoints() {
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+type Props = NativeStackScreenProps<RootStackParamList, 'ListWayPoint'>;
+export default function ListWayPoints({ route, navigation }: Props) {
 
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -13,11 +16,7 @@ export default function ListWayPoints() {
   const path=useAppSelector((state:RootState)=>state.path)
 
   const dispatch=useAppDispatch()
-  useEffect(
-    ()=>{
-      console.log(path)
-    },[path]
-  )
+
   useEffect(() => {
     fetch(`http://192.168.1.14:3000/marker/endpoints/${marker.id}`)
       .then((response) => response.json())
@@ -93,7 +92,6 @@ export default function ListWayPoints() {
     );
   };
   const Emerce = (item:any) => {
-    console.log({markerID: marker.id, endPointID: item.id})
     fetch(`http://192.168.1.14:3000/marker/Path`,{
       method: 'POST',
       headers: {
@@ -104,8 +102,8 @@ export default function ListWayPoints() {
     })
     .then((response)=>response.json())
     .then((res)=>{
-      console.log(res)
       dispatch(pathActions.create(res.path))
+      navigation.navigate("ArSceeneScreen")
     })
   };
   const ItemSeparatorView = () => {
