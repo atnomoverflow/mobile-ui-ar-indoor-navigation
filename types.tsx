@@ -3,6 +3,7 @@
  * https://reactnavigation.org/docs/typescript/
  */
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Viro3DPoint } from '@viro-community/react-viro/dist/components/Types/ViroUtils';
 import {store} from './state';
 
 declare global {
@@ -41,3 +42,7 @@ export type Action={
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
+export type PATH={
+  gps:any;
+  xyz:Viro3DPoint[]|undefined;
+}
