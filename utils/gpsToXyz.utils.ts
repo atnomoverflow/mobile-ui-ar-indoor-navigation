@@ -33,9 +33,11 @@ const latLongToMerc = (latDeg: number, longDeg: number) => {
   };
 export const gpsToXyz =  (path:any,marker:any) => {
     //console.log(marker)
+    //console.log(path)
+
     const aux:Viro3DPoint[]=[[0,0,0],]
     for(let i=0;i<path.length;i++)
-    {aux.push([-transformGpsToAR(path[i].latitude,path[i].longitude,marker).x,0,-transformGpsToAR(path[i].latitude,path[i].longitude,marker).z])}
-   
+    {aux.push([transformGpsToAR(path[i].latitude,path[i].longitude,marker).x,0,transformGpsToAR(path[i].latitude,path[i].longitude,marker).z])}
+   console.log(aux)
     return aux
 }
