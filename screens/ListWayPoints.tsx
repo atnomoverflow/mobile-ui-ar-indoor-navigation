@@ -103,6 +103,7 @@ export default function ListWayPoints({ route, navigation }: Props) {
     .then((response)=>response.json())
     .then((res)=>{
       dispatch(pathActions.create(res.path))
+      dispatch(pathActions.transform(marker))
       navigation.navigate("ArSceeneScreen")
     })
   };

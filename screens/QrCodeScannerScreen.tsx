@@ -8,6 +8,7 @@ import { Text, View } from '../components/Themed';
 import { useAppDispatch,useAppSelector } from '../hooks/hooks';
 import { RootStackParamList, RootState } from '../types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useIsFocused } from '@react-navigation/native';
 interface CodeBar{
     type:any,
      data:any
@@ -20,6 +21,7 @@ export default function QrCodeScannerScreen({ route, navigation }: Props) {
     const [scanned, setScanned] = useState(false);
     const dispatch= useAppDispatch();
     const marker=useAppSelector((state:RootState)=>state.marker)
+   
     useEffect(() => {
       dispatch(markerActions.reset());
       (async () => {
@@ -28,12 +30,12 @@ export default function QrCodeScannerScreen({ route, navigation }: Props) {
       })();
     }, []);
     useEffect(() => {
-
       if(marker.error) 
       setScanned(false);
       if(marker.fetched)
       navigation.navigate('ListWayPoint')
     } ,[marker]);
+    
     const handleBarCodeScanned = (codebar:CodeBar ) => {
       setScanned(true);
    
